@@ -5,6 +5,7 @@
 
 API列表
 | 折淘客API | 类名 |
+| ------ | ------ |
 | 高佣转链（商品ID）| TbkPrivilegeGetRequest |
 | 高佣转链（淘口令）| TbkTpwdConvertRequest |
 | 订单查询 | TbkScOrderGetRequest |
