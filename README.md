@@ -1,8 +1,9 @@
 # 折淘客 Python3 SDK
-淘宝联盟-折淘客(www.zhetaoke.com)-Python3 SDK （非官方）
+淘宝联盟-折淘客(www.zhetaoke.com) - Python3 SDK （非官方）
 
 阿里妈妈已经无法申请到转链、订单等API权限，但可以用第三方接口使用到这些权限。
 本SDK基于官方SDK修改得到的，提供折淘客的所有API功能，使用方法可见demo目录。
+运行demo时需要将config.sample.py重命名为config.py，并填入自己的信息，同时将ztk目录放入demo目录中。
 
 **注：淘客账号授权、淘宝客渠道备案还未完善**
 
