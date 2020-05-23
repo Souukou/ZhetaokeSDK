@@ -1,12 +1,7 @@
-import http.client as httplib
 import urllib
-import time
-import hashlib
 import json
 import ztk
-import itertools
-import mimetypes
-
+import urllib.request 
 
 class RequestException(Exception):
 	# 请求连接异常类，用于抛出异常
@@ -58,21 +53,17 @@ class RestApi(object):
 		pass
 
 	def get_response(self, timeout=30):
-		header = self.get_request_header()
+		#header = self.get_request_header()
 		parameters = self.get_aplication_parameters()
 		parameters["appkey"] = self.__app_key
-		url = self._RestApi__name + '?' + urllib.parse.urlencode(parameters)
+		url = f'https://{self.__domain}:{self.__port}{self._RestApi__name}'
 
-		connection = httplib.HTTPSConnection(self.__domain, self.__port, timeout=timeout)
-		connection.connect()
-		connection.request(self.__httpmethod, url, headers=header)
-		response = connection.getresponse();
+		response = urllib.request.urlopen(url, data=urllib.parse.urlencode(parameters).encode('utf-8'))
 		
 		if response.status is not 200:
 			raise RequestException('invalid http status ' + str(response.status) + ',detail body:' + response.read().decode("utf-8"))
 
 		result = response.read()
-		connection.close()
 		
 		try:
 			jsonobj = json.loads(result)
@@ -97,18 +88,15 @@ class RestApi2(RestApi):
 	# 首次请求折淘客会返回一个已签名的url，需要再次请求该url
 	# =====================
 	def get_response(self, timeout=30):
+		
 		jsonobj = super().get_response()
 		url = jsonobj["url"]
-		
-		connection=httplib.HTTPConnection("gw.api.taobao.com", 80, timeout=timeout)
-		connection.connect()
-		connection.request("GET", url[24:], headers=self.get_request_header())
-		response = connection.getresponse();
-		
+
+		response = urllib.request.urlopen(url)
+
 		if response.status is not 200:
 			raise RequestException('invalid http status ' + str(response.status) + ',detail body:' + response.read().decode("utf-8"))
 		result = response.read()
-		connection.close()
 
 		try:
 			jsonobj = json.loads(result)
